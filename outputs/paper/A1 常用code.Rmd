@@ -1,0 +1,172 @@
+---
+title: "STA304A1"
+author: "Ray"
+date: "06/05/2021"
+output: pdf_document
+abstract: "Your Abstract ....... "
+bibliography: ref_list.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(kableExtra)
+```
+
+
+
+```{r}
+library(openintro)
+df<-ncbirths
+```
+
+
+\newpage
+
+# Data
+
+## Data
+
+### Data
+
+#### Data
+
+*abc*
+
+**efg**
+
+
+
+
+
+The underlying data set is .... There are in total of `r nrow(df)` oberservations of pregent mothers, including their income, ..., and number of hospital visits during pregnancy.
+
+Here is the histogram of the interested variable: the number of hospital visits during pregnancy.
+
+```{r abc, fig.cap ="A Plot",fig.width=6, fig.height=3, warning=FALSE}
+df %>% ggplot(aes(x = visits)) + geom_histogram(fill = "blue", color = "black", bins = 30) +
+  theme_classic()+
+  labs(x = "Number of hospital visits during pregnancy", y = "Frequency", title = "Histogram of Number of hospital visits during pregnancy")
+```
+
+STA part: The histogram of the number of hospital visits during pregnancy shows that it is nearly symmetric distributed with some outliers on both (positive and negative) sides of the plot. There is one significant mode at the middle of the plot and one minor mode at the plot's right side. More detail of the number of hospital visits during pregnancy can are summarised below.\
+ \
+
+```{r bcd}
+summary_table <- df %>% filter(!is.na(visits)) %>% summarise(
+                                  min = min(visits),
+                                  Q1 = quantile(visits,0.25),
+                                  median = median(visits),
+                                  Q3 = quantile(visits,0.75),
+                                  max = max(visits),
+                                  IQR = Q3 - Q1,
+                                  mean = mean(visits), 
+                                  sd = sd(visits), 
+                                  Small_Outliers = sum(visits < Q1 - 1.5*IQR),
+                                  Large_Outliers = sum(visits > Q3 + 1.5*IQR)) 
+# change their orders, add or remove some of them
+kableExtra::kable(summary_table, caption = "ABC")
+```
+
+STA part: The mean and median of hospital visits during pregnancy are similar at `r round(summary_table$mean)`, which supports that the distribution of the number of hospital visits during pregnancy is symmetric. The sample standard deviation (`r summary_table$sd`)  is relatively small, meaning the uncertainty of the data is relatively low.  There are `r summary_table$Small_Outliers + summary_table$Large_Outliers` outliers in the model.
+
+More non-statistical work....telling a story
+
+
+\newpage
+### More Plots
+```{r, fig.width=6, fig.height=3}
+df %>% ggplot(aes(x= gender)) + geom_bar() + theme_classic()+
+  labs(x = "xxx", y = "YYY", title = "XXX")
+```
+
+which one is higher...
+
+
+```{r, fig.width=6, fig.height=3}
+df %>% filter(!is.na(marital)) %>% 
+  ggplot(aes(x= gender, fill = marital)) + geom_bar() + theme_classic()+
+  geom_text(stat = 'count',aes(label =..count.., vjust =-2))+
+  labs(x = "xxx", y = "YYY", title = "XXX")
+```
+
+which one is higher...
+
+talk about the proportion
+
+
+```{r, fig.width=6, fig.height=3}
+df %>% ggplot(aes(y = visits, x= gender)) + geom_boxplot() + theme_classic()+
+  labs(x = "Number of hospital visits during pregnancy", y = "Mother age", title = "XXX")
+
+```
+
+compare: median, IQR, outliers, range...
+
+```{r}
+
+df %>% ggplot(aes(x = visits, y = mage)) + geom_point() + theme_classic()+
+  labs(x = "Number of hospital visits during pregnancy", y = "Mother age", title = "XXX")
+
+df %>% ggplot(aes(x = visits, y = mage,color = gender)) + geom_point() + theme_classic()+
+  labs(x = "Number of hospital visits during pregnancy", y = "Mother age", title = "XXX")
+```
+
+talk about direction, form, strength
+
+
+- Need other plots? draw it by hand first, then google it or ask me for the code 
+- Remember to tell a story! not just statistics! 
+
+
+\newpage
+### More tables
+```{r}
+summary_table <- df %>% filter(!is.na(visits)) %>% 
+  group_by(gender) %>% summarise(min = min(visits),
+                                  Q1 = quantile(visits,0.25),
+                                  median = median(visits),
+                                  Q3 = quantile(visits,0.75),
+                                  max = max(visits),
+                                  IQR = Q3 - Q1,
+                                  mean = mean(visits), 
+                                  sd = sd(visits), 
+                                  Small_Outliers = sum(visits < Q1 - 1.5*IQR),
+                                  Large_Outliers = sum(visits > Q3 + 1.5*IQR)) 
+# change their orders, add or remove some of them
+knitr::kable(summary_table)
+```
+
+
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+
+
+- more table format see https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/
+
+
+\newpage
+
+
+- warning=FALSE, message=FALSE, echo = FALSE
+- There should be no raw code. Any output should be nicely formatted.
+- Remember to end each section with a concluding sentence. This means reiterating the key points from your writing.
+
+\newpage
+
+Something @ABCDEFG.
+
+[@ABCDEFG]
+
+@yourarticle
+
+# Reference
+
+
+
+
+
+
